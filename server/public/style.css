@@ -1,0 +1,24 @@
+.cardStyle{
+    width: 20vw;
+    height: 30vh;
+    background-color: rgb(52, 182, 214);
+    border: red;
+    margin:1vmax;
+    display: inline-block;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+.cardStyle:hover{
+    opacity: 0.85;
+}
+
+.red{
+    background-color: red;
+}
+.green{
+    background-color: green;
+}
+.purple{
+    background-color: purple;
+}

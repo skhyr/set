@@ -1,0 +1,6 @@
+.selectedCard{
+    background-color: rgba(255, 166, 0, 0.397) !important;
+    border-color: orchid !important;
+    border-width: 0.17rem !important;
+    margin: 0.9rem !important;
+}
