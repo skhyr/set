@@ -75,6 +75,7 @@ const isSetCorrect = (setToChek) =>{
 }
 
 io.on('connect', (socket) => {
+    socket.join('eRoom');
     console.log('e');
     socket.on('newUser', (data, callback)=>{
         return callback(cardsOnTable);
@@ -95,7 +96,7 @@ io.on('connect', (socket) => {
             for(let i = 0; i < 3; i++) newCards.push(deck.pop());
 
             console.log('i');
-            socket.emit('setFound', {ids, newCards});
+            io.sockets.emit('setFound', {ids, newCards});
 
 
             cardsOnTable = cardsOnTable.map(element => {

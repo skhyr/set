@@ -8,14 +8,16 @@ let socket;
 const Table = () =>{
     const [deck, setDeck] = useState([]);
     const [selected, setSelected] = useState([]);
+    const ENDPOINT = 'localhost:4000';
 
     useEffect(()=>{
-        socket = io('localhost:4000');
+        socket = io(ENDPOINT);
+
         socket.emit('newUser', 'e', (data) =>{
             setDeck(data);
         });
         console.log('oo');
-    },[]);
+    },[ENDPOINT]);
 
     useEffect(() =>{
         console.log('n');
@@ -27,7 +29,13 @@ const Table = () =>{
                 else return element;
             }));
         });
-    });
+
+        return () => {
+            socket.emit('disconnect');
+      
+            socket.off();
+          }
+    }, [deck]);
 
     useEffect(()=>{
         if(selected.length === 3){ 
