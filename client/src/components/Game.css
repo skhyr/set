@@ -1,0 +1,12 @@
+.Game{
+    margin:0px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+
+@media only screen and (max-width: 880px) {
+    .Game{
+        overflow: hidden;
+    }
+}

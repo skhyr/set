@@ -1,6 +1,29 @@
-.selectedCard{
-    background-color: rgba(255, 166, 0, 0.397) !important;
-    border-color: orchid !important;
-    border-width: 0.17rem !important;
-    margin: 0.9rem !important;
+.Table{
+    height: 42vw;
+    width: 80vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 1vw;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 1vw;
+    margin-left: 1vw;
+}
+
+@media only screen and (max-width: 880px) {
+    .Table{
+        height: 73.76vw;
+        margin-right: 2vw;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (max-width: 740px) {
+    .Table{
+        width: 100vw;
+        height: 88.9vw;
+        margin-bottom: 2vw;
+    }
 }

@@ -46,10 +46,22 @@ function makeDeck(){
                 }
 }
 
+const getRandomCardFromDeck = () => {
+    const rnd = Math.floor (Math.random() * (deck.length) );
+    const elementToReturn = deck[rnd];
+    deck.splice(rnd, 1);
+    console.log(rnd);
+
+    return deck.pop();
+
+    return elementToReturn;
+}
+
 initGame = () =>{
+    
     makeDeck();
     for(let i = 0; i < 12; i++) {
-        cardsOnTable.push(deck.pop());
+        cardsOnTable.push( getRandomCardFromDeck() );
     }
 } 
 initGame();
@@ -76,8 +88,8 @@ const isSetCorrect = (setToChek) =>{
 
 io.on('connect', (socket) => {
     socket.join('eRoom');
-    console.log('e');
-    socket.on('newUser', (data, callback)=>{
+    socket.on('init', (data, callback)=>{
+        io.sockets.emit('newUser', 'newUser');
         return callback(cardsOnTable);
     });
 
@@ -93,9 +105,8 @@ io.on('connect', (socket) => {
 
         if(isSetCorrect(setToCheck)){
             const newCards = []; 
-            for(let i = 0; i < 3; i++) newCards.push(deck.pop());
+            for(let i = 0; i < 3; i++) newCards.push( getRandomCardFromDeck() );
 
-            console.log('i');
             io.sockets.emit('setFound', {ids, newCards});
 
 

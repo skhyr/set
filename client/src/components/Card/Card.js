@@ -1,18 +1,15 @@
-import React/*, { useState, useEffect }*/ from 'react';
+import React from 'react';
 import './Card.css';
-import E from '../symbols/E.js';
-
-
+import Symbols from '../symbols/Symbols.js';
 
 const Card = ({card, click}) =>{
-return(
-        <div className='card' onClick={click} id={card.id}>
-                {card.color}<br/>
-                {card.symbol}<br/>
-                {card.fill}<br/>
-                {card.quantity}<br/>
-                <E color = {card.color}/>
-        </div>
-    );
+
+        const out = [];
+        for(let i = 0; i < card.quantity; i++) out.push (<Symbols color = {card.color} symbol = {card.symbol} fill={card.fill} key={card.id+''+i} /> )
+        return(
+                <div className='card' onClick={click} id={card.id}>
+                        {out}
+                </div>
+        );
 };
 export default Card;

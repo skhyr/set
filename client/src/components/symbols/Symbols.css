@@ -1,0 +1,10 @@
+svg{
+    margin: auto;
+    transform: rotate(90deg) translate(41.7%, 58%);
+}
+
+
+.svgContainer{
+    width: 20%;
+    display: inline-block;
+}
