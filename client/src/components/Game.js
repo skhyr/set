@@ -1,13 +1,19 @@
-import React from 'react';
-
-import './Game.css';
+import React, {useContext, useEffect} from 'react';
+import {InfoContext} from './InfoContext';
 import Table from './Table/Table';
 import Scoreboard from './Scoreboard/Scoreboard';
+import './Game.css';
 
-const Game = () =>{
-   return (
+const Game = ({history}) =>{
+    const [nickName, setNickName] = useContext(InfoContext);
+
+    useEffect(()=>{
+        if(nickName === 'init') history.push('/');
+    });
+
+    return (
     <div className='Game' >
-        <Table />
+        <Table  history={history} />
         <Scoreboard />
     </div>
     );

@@ -1,52 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
 import './Table.css';
 import Card from '../Card/Card';
+import {InfoContext} from '../InfoContext';
+import {ScoreContext} from '../ScoreContext';
+import Scoreboard from '../Scoreboard/Scoreboard';
 
 let socket;
 
-const Table = () =>{
+const Table = ({history}) =>{
     const [deck, setDeck] = useState([]);
     const [selected, setSelected] = useState([]);
+    const [nickName, setNickName] = useContext(InfoContext); 
+    const [score, setScore] = useContext(ScoreContext);
     const ENDPOINT = 'localhost:4000';
 
     useEffect(()=>{
         socket = io(ENDPOINT);
+        socket.emit('init', nickName, (data) =>{
+           if(data === 'error'){
+                alert('user with this name already exists!!');
+                history.push('/');
+            }
+            else setDeck(data);
 
-        socket.emit('init', 'e', (data) =>{
-            setDeck(data);
         });
     },[ENDPOINT]);
 
-    useEffect(() =>{
-        socket.on('setFound', ({ids, newCards}) =>{             
-            setDeck(deck.map(element => {
-                if(element.id === ids[0]) {
-                    const e = document.getElementById(element.id);
-                    e.classList.remove("movements");
-                    void e.offsetWidth;
-                    e.classList.add("movements");
+    const animate = (e) =>{
+        e.classList.remove("movements");
+        void e.offsetWidth;
+        e.classList.add("movements");
+    }
 
+    useEffect(() =>{
+        socket.on('setFound', ({ids, newCards, scoreboard}) =>{    
+            setScore(scoreboard);
+            setDeck(deck.map(element => {
+                const e = document.getElementById(element.id);
+                if(element.id === ids[0]) {
+                    animate(e);
                     return newCards[0];
                 }
                 else if(element.id === ids[1]) {
-                    const e = document.getElementById(element.id);
-                    e.classList.remove("movements");
-                    void e.offsetWidth;
-                    e.classList.add("movements");
-
+                    animate(e);
                     return newCards[1];
                 }
                 else if(element.id === ids[2]){
-                    const e = document.getElementById(element.id);
-                    e.classList.remove("movements");
-                    void e.offsetWidth;
-                    e.classList.add("movements");
-
+                    animate(e);
                     return newCards[2];
                 }
                 else return element;
             }));
+        });
+
+        socket.on('newUser', users=>{
+            setScore(users);
         });
 
         return () => {
@@ -58,7 +67,7 @@ const Table = () =>{
     useEffect(()=>{
         
         if(selected.length === 3){ 
-            socket.emit('trySet', [selected], (answer)=>{
+            socket.emit('trySet', {ids:selected, nickName}, (answer)=>{
                 answer ? 
                     alert('good')
                 : alert('bad');

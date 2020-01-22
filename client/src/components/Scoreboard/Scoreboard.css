@@ -1,7 +1,18 @@
 .Scoreboard{
     height:100vh;
-    background-color: #ffb8ff;
+    background-color: #1a1a1a;
     width: 18vw;
+    color: #eeeeee;
+    font-size: 1.5em;   
+}
+
+.hs{
+    text-align: center;
+    width: 100%;
+}
+
+.u{
+    color: magenta;
 }
 
 @media only screen and (max-width: 880px) {

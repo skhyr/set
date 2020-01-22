@@ -1,8 +1,8 @@
 import React, {useState, useContext} from 'react';
 import {InfoContext} from './InfoContext';
-import Scoreboard from './Scoreboard/Scoreboard'
+import Scoreboard from './Scoreboard/Scoreboard';
 
-const Rooms = () =>{
+const Rooms = ({history}) =>{
     const [nickName, setNickName] = useContext(InfoContext);
     
     const inputUpdate = e => {
@@ -11,7 +11,7 @@ const Rooms = () =>{
     
     const buttonClick = (e) =>{
         e.preventDefault();
-        
+        history.push('/game');
     }
 
 
@@ -22,9 +22,8 @@ const Rooms = () =>{
         <input type="text" onChange={inputUpdate} />
         <button onClick={buttonClick}>Submit</button>
     </form>
-    <a href="game">t</a>
+    
    <h3>{nickName}</h3>
-   <Scoreboard></Scoreboard>
     </div>
     );
 }

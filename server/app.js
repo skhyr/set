@@ -6,6 +6,8 @@ let server = app.listen(4000, () => console.log('server started') );
 app.use(express.static('public'));
 let io = socket(server);
 
+const {addUser, getUser, getAllUsersNames, getScoreboard, addPoint} = require('./users');
+
 const deck = [];
 let cardsOnTable = [];
 
@@ -50,7 +52,6 @@ const getRandomCardFromDeck = () => {
     const rnd = Math.floor (Math.random() * (deck.length) );
     const elementToReturn = deck[rnd];
     deck.splice(rnd, 1);
-    console.log(rnd);
 
     return deck.pop();
 
@@ -87,14 +88,18 @@ const isSetCorrect = (setToChek) =>{
 }
 
 io.on('connect', (socket) => {
-    socket.join('eRoom');
-    socket.on('init', (data, callback)=>{
-        io.sockets.emit('newUser', 'newUser');
-        return callback(cardsOnTable);
+
+    socket.on('init', (nickName, callback)=>{
+        const result = addUser(nickName);
+        if(result){
+            io.sockets.emit('newUser', getScoreboard());
+            callback(cardsOnTable);
+        }
+        else callback('error');
+        console.log(getAllUsersNames());
     });
 
-    socket.on('trySet', (ids, callback)=>{
-        ids = ids[0];
+    socket.on('trySet', ({ids, nickName}, callback)=>{
         const setToCheck = ids.map((element =>{
             const index = cardsOnTable.findIndex(card=>{
                  return element==card.id;
@@ -102,13 +107,13 @@ io.on('connect', (socket) => {
 
             return cardsOnTable[index];
         }));
-
         if(isSetCorrect(setToCheck)){
             const newCards = []; 
             for(let i = 0; i < 3; i++) newCards.push( getRandomCardFromDeck() );
 
-            io.sockets.emit('setFound', {ids, newCards});
-
+            addPoint(nickName);
+            const scoreboard = getScoreboard();
+            io.sockets.emit('setFound', {ids, newCards, scoreboard});
 
             cardsOnTable = cardsOnTable.map(element => {
                 if(element.id == ids[0] || element.id == ids[1] || element.id == ids[2]) return newCards.pop();
@@ -117,6 +122,4 @@ io.on('connect', (socket) => {
         }
         else callback(false);
     });
-    
-   
 });
