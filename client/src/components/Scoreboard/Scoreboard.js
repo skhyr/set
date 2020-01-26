@@ -11,9 +11,9 @@ const Scoreboard = () =>{
         <div className='Scoreboard' >
             <h2 className='hs'>Scoreboard</h2>
                 {score.map((e, id)=>{
-                    {if(e.name===nickName) return <div key={id} className='u'> {e.name + ' ' + e.score} </div>}
+                    {if(e.name===nickName) return <div key={id} className='u'> {(id+1) + '. ' + e.name + ' ' + e.score} </div>}
 
-                    return <div key={id}> {e.name + ' ' + e.score} </div>
+                    return <div key={id}> {(id+1) + '. ' + e.name + ' ' + e.score} </div>
                 })}
             
          </div>

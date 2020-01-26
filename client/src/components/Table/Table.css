@@ -11,6 +11,26 @@
     margin-left: 1vw;
 }
 
+.winner{
+    position: fixed;
+    z-index: 5;
+    height: 100vh;
+    line-height: 100vh;
+    width: 82vw;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(0, 255, 106, 0.822);
+    font-size: 4rem;
+    text-align: center;
+    overflow: visible;
+}
+
+.winnerSubtext{
+    color: rgb(223, 223, 223);
+    margin-bottom: 0vh;
+    font-size: 0.5em;
+}
+
 @media only screen and (max-width: 880px) {
     .Table{
         height: 73.76vw;

@@ -4,7 +4,6 @@ import './Table.css';
 import Card from '../Card/Card';
 import {InfoContext} from '../InfoContext';
 import {ScoreContext} from '../ScoreContext';
-import Scoreboard from '../Scoreboard/Scoreboard';
 
 let socket;
 
@@ -14,6 +13,7 @@ const Table = ({history}) =>{
     const [nickName, setNickName] = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
     const ENDPOINT = 'localhost:4000';
+    let won = true;
 
     useEffect(()=>{
         socket = io(ENDPOINT);
@@ -34,23 +34,33 @@ const Table = ({history}) =>{
     }
 
     useEffect(() =>{
+        socket.on('gameEnd', name =>{
+                console.log(name);
+                document.querySelector("#winner").classList.add('winner') ;            
+                document.querySelector("#winner").innerHTML += name;            
+        });
+
         socket.on('setFound', ({ids, newCards, scoreboard}) =>{    
             setScore(scoreboard);
-            setDeck(deck.map(element => {
-                const e = document.getElementById(element.id);
-                if(element.id === ids[0]) {
-                    animate(e);
-                    return newCards[0];
-                }
-                else if(element.id === ids[1]) {
-                    animate(e);
-                    return newCards[1];
-                }
-                else if(element.id === ids[2]){
-                    animate(e);
-                    return newCards[2];
-                }
-                else return element;
+            if(newCards!=null) 
+                setDeck(deck.map(element => {
+                    const e = document.getElementById(element.id);
+                    if(element.id === ids[0]) {
+                        animate(e);
+                        return newCards[0];
+                    }
+                    else if(element.id === ids[1]) {
+                        animate(e);
+                        return newCards[1];
+                    }
+                    else if(element.id === ids[2]){
+                        animate(e);
+                        return newCards[2];
+                    }
+                    else return element;
+                }));
+            else setDeck(deck.filter(e=>{
+                return e.id!== ids[0] && e.id!== ids[1] && e.id!== ids[2];
             }));
         });
 
@@ -59,7 +69,6 @@ const Table = ({history}) =>{
         });
 
         return () => {
-            socket.emit('disconnect');
             socket.off();
           }
     }, [deck]);
@@ -69,12 +78,11 @@ const Table = ({history}) =>{
         if(selected.length === 3){ 
             socket.emit('trySet', {ids:selected, nickName}, (answer)=>{
                 answer ? 
-                    alert('good')
+                alert('good')
                 : alert('bad');
             });
             selected.forEach(el=>{
                 document.getElementById(el).classList.remove('selectedCard');
-               // document.getElementById(el).classList.remove('movements');
             });
             setSelected([]);
         }
@@ -95,9 +103,13 @@ const Table = ({history}) =>{
         }
     };
 
+    let temp = <span>e</span>;
+    if(won) temp = <div className='winner'>Piotrek32</div>;
+
     return(
-        <div className='Table' >
+        <div className='Table'>
             {deck.map((card, i)=> <Card key={i} card={card} click={()=>selectCard(card.id)} /> )}
+            <div id='winner'></div>
         </div>
     );
 };

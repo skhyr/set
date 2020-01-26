@@ -15,6 +15,7 @@ const Game = ({history}) =>{
     <div className='Game' >
         <Table  history={history} />
         <Scoreboard />
+        
     </div>
     );
 }

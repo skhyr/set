@@ -65,5 +65,12 @@ const addPoint = (name) =>{
     });
 }
 
+const userQuit = name =>{
+    users.forEach(e=>{
+        if(e.name == name){
+            e.online = false;
+        }
+    });
+}
 
-module.exports = { addUser, getUser, getAllUsersNames, getScoreboard, addPoint};
+module.exports = { addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit};
