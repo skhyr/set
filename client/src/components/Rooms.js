@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {InfoContext} from './InfoContext';
 import Scoreboard from './Scoreboard/Scoreboard';
+import './Rooms.css';
 
 const Rooms = ({history}) =>{
     const [nickName, setNickName] = useContext(InfoContext);
@@ -16,16 +17,29 @@ const Rooms = ({history}) =>{
 
 
    return (
-    <div>
-    <h1>Rooms</h1>
-    <form>
-        <input type="text" onChange={inputUpdate} />
-        <button onClick={buttonClick}>Submit</button>
-    </form>
-    
-   <h3>{nickName}</h3>
+    <div className='Rooms'>
+        <form className='formBox'>
+            <h1>Join the game</h1>  
+
+                <input placeholder='nickname' type="text" id='loginy' onChange={inputUpdate} autoComplete='off' />
+            
+                <input  placeholder='room' type="text" />
+
+                <button className='goButton' onClick={buttonClick}>Play</button>
+           
+        </form>
     </div>
     );
 }
 
 export default Rooms;
+
+
+
+
+
+
+
+
+
+

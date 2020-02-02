@@ -15,20 +15,32 @@
     position: fixed;
     z-index: 5;
     height: 100vh;
-    line-height: 100vh;
     width: 82vw;
     left: 0px;
     top: 0px;
-    background-color: rgba(0, 255, 106, 0.822);
-    font-size: 4rem;
+    background-color: rgba(0, 0, 0, 0.925);
+    font-size: 5rem;
     text-align: center;
-    overflow: visible;
+    display: none;
+    color: rgb(255, 255, 255);
+
+    
+}
+
+.center{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 100%;
+    text-align: center;
 }
 
 .winnerSubtext{
-    color: rgb(223, 223, 223);
+    color: rgb(114, 114, 114);
     margin-bottom: 0vh;
-    font-size: 0.5em;
+    font-size: 0.3em;
 }
 
 @media only screen and (max-width: 880px) {
@@ -46,4 +58,10 @@
         height: 88.9vw;
         margin-bottom: 2vw;
     }
+}
+
+.Table button{
+    position: fixed;
+    top: 10px;
+    right: 1000px;
 }

@@ -50,7 +50,7 @@ function makeDeck(){
 }
 
 const getRandomCardFromDeck = () => {
-    //return deck.pop();
+    return deck.pop();
     const rnd = Math.floor (Math.random() * (deck.length) );
     const elementToReturn = deck[rnd];
     deck.splice(rnd, 1);
@@ -98,7 +98,7 @@ io.on('connect', (socket) => {
     });
     
     socket.on('trySet', ({ids, nickName}, callback)=>{
-        //io.sockets.emit('gameEnd', nickName);
+       // io.sockets.emit('gameEnd', nickName);
         let good = 0;
         cardsOnTable.forEach(e=>{ if(e.id===ids[0]){good++;return;} });
         cardsOnTable.forEach(e=>{ if(e.id===ids[1]){good++;return;} });
@@ -117,7 +117,7 @@ io.on('connect', (socket) => {
             addPoint(nickName);
             let newCards;
 
-            if(deck.length!=0){
+            if(deck.length!=0 && cardsOnTable.length<=12){
                 newCards = []; 
                 for(let i = 0; i < 3; i++) newCards.push( getRandomCardFromDeck() );
                 const newCards2 = newCards.map(e=>e);                  
@@ -133,10 +133,18 @@ io.on('connect', (socket) => {
             
             console.log(cardsOnTable.length);
             io.sockets.emit('setFound', {ids, newCards, scoreboard});
-            if(cardsOnTable.length===0)io.sockets.emit('gameEnd', nickName);
+            if(cardsOnTable.length===0) io.sockets.emit('gameEnd', scoreboard[0].name) ;
         }
-
         else callback(false);
     });
 
+    socket.on('noMoreSet', ()=>{
+        const tempCards = [];
+        for(let i = 0; i < 3; i++){
+             const t = getRandomCardFromDeck();
+             cardsOnTable.push(t);
+             tempCards.push(t);
+        }
+        socket.emit('moreCards', tempCards);
+    });
 });

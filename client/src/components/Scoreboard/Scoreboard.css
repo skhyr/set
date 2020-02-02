@@ -3,7 +3,9 @@
     background-color: #1a1a1a;
     width: 18vw;
     color: #eeeeee;
-    font-size: 1.5em;   
+    font-size: 1.5em;
+    position: absolute;
+    right: 0;
 }
 
 .hs{
@@ -12,12 +14,13 @@
 }
 
 .u{
-    color: magenta;
+    color: tomato;
 }
 
 @media only screen and (max-width: 880px) {
     .Scoreboard{
         width: 17vw;
+        position: initial;
     }
 }
 
