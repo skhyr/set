@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
 import './Table.css';
 import Card from '../Card/Card';
-import {InfoContext} from '../InfoContext';
-import {ScoreContext} from '../ScoreContext';
+import {InfoContext} from '../contexts/InfoContext';
+import {ScoreContext} from '../contexts/ScoreContext';
+import {FunctionContext} from '../contexts/FunctionContext';
 
 let socket;
 
@@ -13,6 +14,7 @@ const Table = ({history}) =>{
     const [winnerName, setWinnnerName] = useState('twoj stary');
     const [nickName, setNickName] = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
+    const {need, changeNeedFalse} = useContext(FunctionContext);
     const ENDPOINT = 'localhost:4000';
 
     useEffect(()=>{
@@ -60,8 +62,10 @@ const Table = ({history}) =>{
         });
         
         socket.on('moreCards', newCards=>{
-            setDeck([...deck, ...newCards]);
-            console.log(deck.length);
+            deck.length==12
+            ? setDeck([...deck, ...newCards])
+            : setDeck([...newCards, ...deck]);
+            changeNeedFalse();
         });
         
         socket.on('newUser', users=>{
@@ -109,14 +113,23 @@ const Table = ({history}) =>{
         }
     };
 
-    const randomF = () =>{
-        socket.emit('noMoreSet');
-    }
+    useEffect(()=>{
+        socket.emit('noMoreSet', {state: need, name: nickName});
+    }, [need]);
+
+    let prefix = [];
+    if(deck.length<=15) prefix = [<div></div>, <div></div>, <div></div>];  
+    let sufix = [];  
+    if(deck.length<=12) sufix = [<div></div>, <div></div>, <div></div>]; 
 
     return(
         <div className='Table'>
-        <button onClick={randomF} >Wincyj</button>
-            {deck.map((card, i)=> <Card key={i} card={card} click={()=>selectCard(card.id)} /> )}
+            {prefix}
+            {deck.map(
+                (card, i)=>
+                        <Card key={i} card={card} click={()=>selectCard(card.id)} /> 
+            )}
+            {sufix}
         <div  className='winner'> <div className='center'>  <div className='winnerSubtext'>the winner is:</div>{winnerName}</div>  </div>
         </div>
     );

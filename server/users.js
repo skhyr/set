@@ -15,7 +15,8 @@ const addUser = (user) =>{
     else users.push({
         name: user,
         score: 0,
-        online: true
+        online: true,
+        need: false
     });
     return true;
 };
@@ -73,4 +74,24 @@ const userQuit = name =>{
     });
 }
 
-module.exports = { addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit};
+const countNeeds = () =>{
+    let out = 0;
+    users.forEach((e)=>{
+        if(e.need == true) out ++;
+    });
+    return out;
+}
+
+const changeNeed = (name, state) =>{
+    users.forEach(e=>{
+        if(e.name == name){
+            e.need = state;
+        }
+    });
+}
+
+const getUsersQuantity = () =>{
+    return users.length;
+}
+
+module.exports = { addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity};

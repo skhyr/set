@@ -4,10 +4,14 @@ let socket = require('socket.io');
 let app = express();
 let server = app.listen(4000, () => console.log('server started') );
 app.use(express.static('public'));
-
 let io = socket(server);
 
-const {addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit} = require('./users');
+
+app.get('/', function (req, res) {
+    res.sendFile('index.html');
+ })
+
+const {addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity} = require('./users');
 
 const deck = [];
 let cardsOnTable = [];
@@ -138,13 +142,21 @@ io.on('connect', (socket) => {
         else callback(false);
     });
 
-    socket.on('noMoreSet', ()=>{
+    socket.on('noMoreSet', ({name, state})=>{
+        changeNeed(name, state);
+        console.log(countNeeds());
+
+        if(countNeeds()*2 <= getUsersQuantity() || cardsOnTable.length==18) return;
+        if(deck.length==0){
+            io.sockets.emit('gameEnd', getScoreboard()[0].name);
+            return;
+        }
         const tempCards = [];
         for(let i = 0; i < 3; i++){
              const t = getRandomCardFromDeck();
              cardsOnTable.push(t);
              tempCards.push(t);
         }
-        socket.emit('moreCards', tempCards);
+        io.sockets.emit('moreCards', tempCards);
     });
 });

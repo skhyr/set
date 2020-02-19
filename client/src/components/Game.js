@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {InfoContext} from './InfoContext';
+import {InfoContext} from './contexts/InfoContext';
 import Table from './Table/Table';
 import Scoreboard from './Scoreboard/Scoreboard';
 import './Game.css';

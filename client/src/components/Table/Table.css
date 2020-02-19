@@ -2,13 +2,15 @@
     height: 42vw;
     width: 80vw;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-gap: 1vw;
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 1vw;
     margin-left: 1vw;
+    align-items: center;
 }
 
 .winner{
@@ -47,8 +49,8 @@
     .Table{
         height: 73.76vw;
         margin-right: 2vw;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 }
 
@@ -63,5 +65,5 @@
 .Table button{
     position: fixed;
     top: 10px;
-    right: 1000px;
+    left: 10px;
 }

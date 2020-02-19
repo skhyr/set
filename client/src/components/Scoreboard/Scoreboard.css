@@ -17,6 +17,42 @@
     color: tomato;
 }
 
+.playersList{
+    height: 60%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding-left: .3em;
+}
+
+.playersList div{
+    height: 1em;
+    overflow: hidden;
+    width: 100em;
+}
+
+.Scoreboard button{
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 1rem;
+    width: 90%;
+    height: 4rem;
+    transition: background-color .2s ease-out;
+    border: none;
+    border-radius: .2rem;
+    outline: none;
+    color: rgb(214, 202, 183);
+    font-size: 1em;
+}
+
+.Scoreboard .unclicked{
+    background-color: rgb(88, 42, 114);
+}
+.Scoreboard .clicked{
+    background-color: rgb(53, 39, 61);
+}
+
 @media only screen and (max-width: 880px) {
     .Scoreboard{
         width: 17vw;

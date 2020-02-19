@@ -4,9 +4,13 @@
     border-width: 0.07rem;
     border-radius: 3%;
     height: 100%;
-    width: 100%;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     opacity: 1;
 }
 
