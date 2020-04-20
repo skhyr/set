@@ -5,19 +5,18 @@ import Scoreboard from './Scoreboard/Scoreboard';
 import './Game.css';
 
 const Game = ({history}) =>{
-    const [nickName, setNickName] = useContext(InfoContext);
+    const [nickName] = useContext(InfoContext);
 
-    useEffect(()=>{
-        if(nickName === 'init') history.push('/');
-    });
-
-    return (
-    <div className='Game' >
-        <Table  history={history} />
-        <Scoreboard />
-        
-    </div>
-    );
+    if(nickName === null){
+        history.push('/');
+        return( <div></div> );
+    }
+    else return (
+            <div className='Game' >
+                <Table  history={history} />
+                <Scoreboard />
+            </div>
+            );
 }
 
 export default Game;

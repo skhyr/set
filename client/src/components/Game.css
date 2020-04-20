@@ -7,8 +7,10 @@
     background-color: rgb(114, 90, 128);
 }
 
-@media only screen and (max-width: 880px) {
-    .Game{
-        overflow: hidden;
-    }
+*::selection{
+    color: tomato;
+}
+
+*{
+    box-sizing: border-box;
 }

@@ -1,6 +1,5 @@
-import React, {useState, useContext} from 'react';
+import React, { useContext} from 'react';
 import {InfoContext} from './contexts/InfoContext';
-import Scoreboard from './Scoreboard/Scoreboard';
 import './Rooms.css';
 
 const Rooms = ({history}) =>{
@@ -9,7 +8,7 @@ const Rooms = ({history}) =>{
     const inputUpdate = e => {
         setNickName(e.target.value);
     }
-    
+
     const buttonClick = (e) =>{
         e.preventDefault();
         history.push('/game');

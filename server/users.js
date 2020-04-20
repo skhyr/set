@@ -7,7 +7,7 @@ const isUser = (user) =>{
     else return 'offline';
 }
 
-const addUser = (user) =>{
+const addUser = ({user, socketId}) =>{
     if(user==null) return;
     const state = isUser(user);
     if(  state == 'online') return false;
@@ -16,7 +16,8 @@ const addUser = (user) =>{
         name: user,
         score: 0,
         online: true,
-        need: false
+        need: false, 
+        socketId: socketId
     });
     return true;
 };
@@ -30,26 +31,12 @@ const goOnline = (user) =>{
     });
 }
 
-
-const removeUser = () =>{
-
-}
-
-const getUser = (user) =>{
-    users.forEach(e=>{
-        
-    });
-}
-
-const getAllUsersNames = () =>{
-    return users.map(e=> {return e.name});
-}
-
 const getScoreboard = () =>{
-    const scoreboard = users.map(el=>{
+    const scoreboard = users.map(e=>{
         return {
-            name: el.name,
-            score: el.score
+            name: e.name,
+            score: e.score,
+            online: e.online
         }
     });
     scoreboard.sort((a, b)=>{
@@ -66,10 +53,11 @@ const addPoint = (name) =>{
     });
 }
 
-const userQuit = name =>{
+const userQuit = socketId =>{
     users.forEach(e=>{
-        if(e.name == name){
+        if(e.socketId == socketId){
             e.online = false;
+            return e.name;
         }
     });
 }
@@ -91,7 +79,11 @@ const changeNeed = (name, state) =>{
 }
 
 const getUsersQuantity = () =>{
-    return users.length;
+    let q = 0;
+    users.forEach((e)=>{
+        if(e.online==true) q++;
+    });
+    return q;
 }
 
-module.exports = { addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity};
+module.exports = { addUser, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity};

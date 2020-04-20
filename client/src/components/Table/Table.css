@@ -1,11 +1,11 @@
 .Table{
-    height: 42vw;
+    height: 45vw;
     width: 80vw;
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    grid-gap: 1vw;
+    row-gap: .3vw;
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 1vw;
@@ -25,8 +25,6 @@
     text-align: center;
     display: none;
     color: rgb(255, 255, 255);
-
-    
 }
 
 .center{
@@ -45,25 +43,24 @@
     font-size: 0.3em;
 }
 
-@media only screen and (max-width: 880px) {
-    .Table{
-        height: 73.76vw;
-        margin-right: 2vw;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-    }
-}
-
-@media only screen and (max-width: 740px) {
-    .Table{
-        width: 100vw;
-        height: 88.9vw;
-        margin-bottom: 2vw;
-    }
-}
-
 .Table button{
     position: fixed;
     top: 10px;
     left: 10px;
+}
+
+@media only screen and (max-width: 740px) {
+    .Table{
+        grid-auto-flow: row;
+        width: 100vw;
+        height: 80vh;
+        margin-bottom: 2vh;
+        margin-top: 2vh;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+    .winner{
+        height: 84vh;
+        width: 100vw;
+    }
 }

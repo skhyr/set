@@ -3,7 +3,6 @@ let socket = require('socket.io');
 
 let app = express();
 let server = app.listen(4000, () => console.log('server started') );
-app.use(express.static('public'));
 let io = socket(server);
 
 
@@ -11,7 +10,7 @@ app.get('/', function (req, res) {
     res.sendFile('index.html');
  })
 
-const {addUser, getUser, getAllUsersNames, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity} = require('./users');
+const {addUser, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity} = require('./users');
 
 const deck = [];
 let cardsOnTable = [];
@@ -54,7 +53,6 @@ function makeDeck(){
 }
 
 const getRandomCardFromDeck = () => {
-    return deck.pop();
     const rnd = Math.floor (Math.random() * (deck.length) );
     const elementToReturn = deck[rnd];
     deck.splice(rnd, 1);
@@ -92,17 +90,15 @@ const isSetCorrect = (setToChek) =>{
 io.on('connect', (socket) => {
 
     socket.on('init', (nickName, callback)=>{
-        const result = addUser(nickName);
+        const result = addUser({user: nickName, socketId: socket.id});
         if(result){
             io.sockets.emit('newUser', getScoreboard());
             callback(cardsOnTable);
         }
         else callback('error');
-        console.log(getAllUsersNames());
     });
     
     socket.on('trySet', ({ids, nickName}, callback)=>{
-       // io.sockets.emit('gameEnd', nickName);
         let good = 0;
         cardsOnTable.forEach(e=>{ if(e.id===ids[0]){good++;return;} });
         cardsOnTable.forEach(e=>{ if(e.id===ids[1]){good++;return;} });
@@ -117,25 +113,23 @@ io.on('connect', (socket) => {
         }));
 
         if(isSetCorrect(setToCheck)){
-            const scoreboard = getScoreboard();
             addPoint(nickName);
-            let newCards;
+            const scoreboard = getScoreboard();
+            let newCards = [];
 
-            if(deck.length!=0 && cardsOnTable.length<=12){
-                newCards = []; 
+            if(deck.length!=0 && cardsOnTable.length<=12){ 
                 for(let i = 0; i < 3; i++) newCards.push( getRandomCardFromDeck() );
                 const newCards2 = newCards.map(e=>e);                  
                 cardsOnTable = cardsOnTable.map(element => {
                     if(element.id == ids[0] || element.id == ids[1] || element.id == ids[2]) return newCards2.pop();
                     else return element;
                 });
+                if(deck.length==0) newCards[2].quantity = null;
             } 
             else {
                 newCards = null;
                 cardsOnTable = cardsOnTable.filter(e=> e.id!==ids[0] && e.id!==ids[1] && e.id!==ids[2] );
             }
-            
-            console.log(cardsOnTable.length);
             io.sockets.emit('setFound', {ids, newCards, scoreboard});
             if(cardsOnTable.length===0) io.sockets.emit('gameEnd', scoreboard[0].name) ;
         }
@@ -146,7 +140,7 @@ io.on('connect', (socket) => {
         changeNeed(name, state);
         console.log(countNeeds());
 
-        if(countNeeds()*2 <= getUsersQuantity() || cardsOnTable.length==18) return;
+        if(countNeeds()*2 <= getUsersQuantity()  || cardsOnTable.length==18) return;
         if(deck.length==0){
             io.sockets.emit('gameEnd', getScoreboard()[0].name);
             return;
@@ -157,6 +151,13 @@ io.on('connect', (socket) => {
              cardsOnTable.push(t);
              tempCards.push(t);
         }
+        if(deck.length==0) tempCards[2].quantity=null, tempCards[2].color=null, tempCards[2].fill=null, tempCards[2].symbol=null;
         io.sockets.emit('moreCards', tempCards);
     });
+
+    socket.on('disconnect', ()=>{
+        userQuit(socket.id);
+        io.sockets.emit('updatePlayersList', getScoreboard());
+    });
+
 });

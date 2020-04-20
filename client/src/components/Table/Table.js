@@ -5,100 +5,24 @@ import Card from '../Card/Card';
 import {InfoContext} from '../contexts/InfoContext';
 import {ScoreContext} from '../contexts/ScoreContext';
 import {FunctionContext} from '../contexts/FunctionContext';
-
 let socket;
 
 const Table = ({history}) =>{
     const [deck, setDeck] = useState([]);
     const [selected, setSelected] = useState([]);
     const [winnerName, setWinnnerName] = useState('twoj stary');
-    const [nickName, setNickName] = useContext(InfoContext); 
+    const [nickName] = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
-    const {need, changeNeedFalse} = useContext(FunctionContext);
+    const {need, changeNeedFalse, changeNeed} = useContext(FunctionContext);
     const ENDPOINT = 'localhost:4000';
-
-    useEffect(()=>{
-        socket = io(ENDPOINT);
-        socket.emit('init', nickName, (data) =>{
-           if(data === 'error'){
-                alert('user with this name already exists!!');
-                history.push('/');
-            }
-            else setDeck(data);
-
-        });
-    },[ENDPOINT]);
-
+    
     const animate = (e) =>{
         e.classList.remove("movements");
         void e.offsetWidth;
         e.classList.add("movements");
     }
 
-    useEffect(() =>{
-        
-        socket.on('setFound', ({ids, newCards, scoreboard}) =>{    
-            setScore(scoreboard);
-            if(newCards!=null) 
-            setDeck(deck.map(element => {
-                const e = document.getElementById(element.id);
-                if(element.id === ids[0]) {
-                    animate(e);
-                    return newCards[0];
-                }
-                else if(element.id === ids[1]) {
-                    animate(e);
-                    return newCards[1];
-                }
-                else if(element.id === ids[2]){
-                    animate(e);
-                    return newCards[2];
-                }
-                else return element;
-            }));
-            else setDeck(deck.filter(e=>{
-                return e.id!== ids[0] && e.id!== ids[1] && e.id!== ids[2];
-            }));
-        });
-        
-        socket.on('moreCards', newCards=>{
-            deck.length==12
-            ? setDeck([...deck, ...newCards])
-            : setDeck([...newCards, ...deck]);
-            changeNeedFalse();
-        });
-        
-        socket.on('newUser', users=>{
-            setScore(users);
-        });
-        
-        socket.on('gameEnd', name =>{
-                setWinnnerName(name);         
-                console.log(winnerName);
-                document.querySelector(".winner").style.display = "block";            
-        });
-        
-        return () => {
-            socket.off();
-        }
-    }, [deck]);
-    
-    useEffect(()=>{
-        
-        if(selected.length === 3){ 
-            socket.emit('trySet', {ids:selected, nickName}, (answer)=>{
-                answer ? 
-                alert('good')
-                : alert('bad');
-            });
-            selected.forEach(el=>{
-                document.getElementById(el).classList.remove('selectedCard');
-            });
-            setSelected([]);
-        }
-    },[selected]);
-    
-    function selectCard(id) {
+    const selectCard = (id) =>{
         let isAlredySelected = false;
         selected.forEach(element=>{
             if(element === id) isAlredySelected=true;
@@ -114,13 +38,90 @@ const Table = ({history}) =>{
     };
 
     useEffect(()=>{
+        socket = io(ENDPOINT);
+        socket.emit('init', nickName, (data) =>{
+           if(data === 'error'){
+                alert('user with this name already exists!!');
+                history.push('/');
+            }
+            else setDeck(data);
+
+        });
+    },[ENDPOINT]);
+
+
+    useEffect(() =>{
+
+        socket.on('setFound', ({ids, newCards, scoreboard}) =>{
+            setScore(scoreboard);
+            if(newCards!=null)
+                setDeck(deck.map(element => {
+                    const e = document.getElementById(element.id);
+                    for(let i = 0; i < 3; i++){
+                        if(element.id === ids[i]) {
+                            e.classList.remove('selectedCard');
+                            setSelected( selected.filter(el=> {return el!==element.id}) );
+                            animate(e);
+                            return newCards[i];
+                        }
+                    };
+                    return element;
+                }));
+            else setDeck(deck.filter(e=>{
+                return e.id!== ids[0] && e.id!== ids[1] && e.id!== ids[2];
+            }));
+
+        });
+        
+        socket.on('moreCards', newCards=>{
+            deck.length===12
+            ? setDeck([...deck, ...newCards])
+            : setDeck([...newCards, ...deck]);
+            changeNeedFalse();
+        });
+        
+        socket.on('newUser', users=>{
+            setScore(users);
+        });
+        
+        socket.on('gameEnd', name =>{
+                setWinnnerName(name);         
+                document.querySelector(".winner").style.display = "block";            
+        });
+
+        socket.on('updatePlayersList', (data)=>{
+            setScore(data);
+        });
+        
+        return () => {
+            socket.off();
+        }
+
+    }, [deck]);
+    
+    useEffect(()=>{
+        if(selected.length === 3){ 
+            socket.emit('trySet', {ids:selected, nickName}, (answer)=>{
+                answer ? 
+                alert('good')
+                : alert('bad');
+            });
+            selected.forEach(el=>{
+                document.getElementById(el).classList.remove('selectedCard');
+            });
+            setSelected([]);
+        }
+    },[selected]);
+    
+
+    useEffect(()=>{
         socket.emit('noMoreSet', {state: need, name: nickName});
     }, [need]);
 
     let prefix = [];
-    if(deck.length<=15) prefix = [<div></div>, <div></div>, <div></div>];  
+    if(deck.length<=15) prefix = [<div key='18824'></div>, <div key='1854624' ></div>, <div key='3735684'></div>];  
     let sufix = [];  
-    if(deck.length<=12) sufix = [<div></div>, <div></div>, <div></div>]; 
+    if(deck.length<=12) sufix = [<div key='1475824'></div>, <div key='15678324'></div>, <div key='16524'></div>]; 
 
     return(
         <div className='Table'>

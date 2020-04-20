@@ -20,7 +20,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2em;
-    height: 17em;
+    height: 22em;
     border: 2px rgb(177, 177, 177) solid;
 }
 
@@ -62,4 +62,3 @@
 .Rooms input::selection{
     color: lightgreen;
 }
-

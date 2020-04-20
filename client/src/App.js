@@ -6,7 +6,8 @@ import {FunctionProvider} from './components/contexts/FunctionContext';
 import Rooms from './components/Rooms';
 import Game from './components/Game';
 
-const App = () =>(
+function App() {
+return(
 <InfoProvider>
     <ScoreProvider>
         <FunctionProvider>
@@ -18,4 +19,5 @@ const App = () =>(
     </ScoreProvider>
 </InfoProvider>
 );
+}
 export default App;

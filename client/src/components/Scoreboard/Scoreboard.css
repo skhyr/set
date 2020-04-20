@@ -4,7 +4,7 @@
     width: 18vw;
     color: #eeeeee;
     font-size: 1.5em;
-    position: absolute;
+    position: relative;
     right: 0;
 }
 
@@ -14,7 +14,11 @@
 }
 
 .u{
-    color: tomato;
+    color: rgb(184, 63, 253);
+}
+
+.offline{
+    color: rgba(255, 255, 255, 0.192);
 }
 
 .playersList{
@@ -32,6 +36,7 @@
 
 .Scoreboard button{
     display: block;
+    font-size: 1em;
     position: absolute;
     left: 50%;
     transform: translate(-50%);
@@ -43,7 +48,6 @@
     border-radius: .2rem;
     outline: none;
     color: rgb(214, 202, 183);
-    font-size: 1em;
 }
 
 .Scoreboard .unclicked{
@@ -53,16 +57,38 @@
     background-color: rgb(53, 39, 61);
 }
 
-@media only screen and (max-width: 880px) {
-    .Scoreboard{
-        width: 17vw;
-        position: initial;
-    }
-}
 
 @media only screen and (max-width: 740px) {
     .Scoreboard{
         width: 100vw;
+        position: relative;
+    }
+    .Scoreboard button{
+        display: block;
+        position:  absolute;
+        width: 4em;
+        font-size: .7em;
+        top: 0em;
+        bottom: initial;
+        right: .2em;
+        left: initial;
+        transform: initial;
+        height: calc(16vh - .4em);
+        margin-top: .2em;
+        margin-bottom: .2em;
+    }
+    .hs{
+        display: block;
+        text-align: left;
+        width: 60%;
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
+        padding-left: 0.3em;
+        font-size: 1.2em;
+    }
+    .playersList{
+        font-size: .7em;
+        width: 65%;
     }
 }
 
