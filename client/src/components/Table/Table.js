@@ -102,9 +102,18 @@ const Table = ({history}) =>{
     useEffect(()=>{
         if(selected.length === 3){ 
             socket.emit('trySet', {ids:selected, nickName, room: roomName}, (answer)=>{
-                answer ? 
-                alert('good')
-                : alert('bad');
+                const proc = document.querySelector('.proc');
+                proc.classList.remove("procAnimation");
+                void proc.offsetWidth;
+                proc.classList.add("procAnimation");
+                if(!answer){
+                    selected.forEach(el=>{
+                        document.getElementById(el).classList.add('badCard');
+                        setTimeout(() => {
+                            document.getElementById(el).classList.remove('badCard');
+                        }, 500);        
+                    });
+                } 
             });
             selected.forEach(el=>{
                 document.getElementById(el).classList.remove('selectedCard');
@@ -125,6 +134,7 @@ const Table = ({history}) =>{
 
     return(
         <div className='Table'>
+        <div className="cooldown"><div className="proc" /></div>
             {prefix}
             {deck.map(
                 (card, i)=>

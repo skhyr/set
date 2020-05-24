@@ -44,8 +44,45 @@
     border-color: rgb(255, 0, 0) !important;
 }
 
+.badCard{
+    border-color: red !important;
+    border-width: 5px !important;
+}
+
 .movements{
     animation: eni 1s ease-out 0s normal !important;
+}
+
+.cooldown{
+    position: absolute;
+    top:0;
+    height: 1.5em;
+    width: 80%;
+    display: block;
+    border:2px solid black;
+}
+.cooldown  > .proc{
+    background-color: rgb(218, 57, 57);
+    width: 0%;
+    height: 100%;
+}.cooldown > .procAnimation{
+    opacity: 0;
+    animation: cool 10s linear 0s normal !important;
+}
+
+@keyframes cool{
+    0%{
+        width: 0%;
+        opacity: 1;
+    }
+    99%{
+        width: 99%;
+        opacity: 1;
+    }
+    100%{
+        width: 100%;
+        opacity: 0;
+    }
 }
 
 @keyframes eni{

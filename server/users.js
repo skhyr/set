@@ -99,7 +99,8 @@ const addUser = ({user, socketId, room}) =>{
         score: 0,
         online: true,
         need: false, 
-        socketId: socketId
+        socketId: socketId,
+        lastWrong: 0
     });
     return true;
 };
@@ -174,5 +175,12 @@ const getUsersQuantity = (room) =>{
     return q;
 }
 
-module.exports = { addUser, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity,
+const wrongSet = (room, user) =>{
+    rooms[room].users.find(e=>e.name === user).lastWrong = Date.now();
+}
+const userCanTry = (room, user) =>{
+    return Date.now() - rooms[room].users.find(e=>e.name === user).lastWrong > 10000;
+}
+
+module.exports = { wrongSet, userCanTry, addUser, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity,
                    prepareRoom, deck, cardsOnTable, setcardsOnTable, getRandomCardFromDeck };

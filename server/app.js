@@ -10,12 +10,8 @@ app.get('/', function (req, res) {
     res.sendFile('index.html');
  })
 
-const {addUser, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity,
+const {wrongSet, userCanTry, addUser, getScoreboard, addPoint, userQuit, countNeeds, changeNeed, getUsersQuantity,
         prepareRoom,  deck, cardsOnTable,setcardsOnTable, getRandomCardFromDeck } = require('./users');
-
-//const deck = [];
-//let cardsOnTable = [];
-
 
 const isSetCorrect = (setToChek) =>{
     if(setToChek[1].color == setToChek[2].color && setToChek[2].color == setToChek[0].color);
@@ -51,6 +47,7 @@ io.on('connect', (socket) => {
     });
     
     socket.on('trySet', ({ids, nickName, room}, callback)=>{
+        if(!userCanTry(room, nickName)) return;
         let cardsMatchingOnTable = 0;
         cardsOnTable(room).forEach(e=>{ if(e.id===ids[0]){cardsMatchingOnTable++;return;} });
         cardsOnTable(room).forEach(e=>{ if(e.id===ids[1]){cardsMatchingOnTable++;return;} });
@@ -62,7 +59,10 @@ io.on('connect', (socket) => {
             });
             return cardsOnTable(room)[index];
         }));
-        if(!isSetCorrect(setToCheck)) return callback(false);
+        if(!isSetCorrect(setToCheck)) {
+            wrongSet(room, nickName);
+            return callback(false);
+        }
         addPoint(nickName, room);
         const scoreboard = getScoreboard(room);
         let newCards = [];
