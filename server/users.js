@@ -73,9 +73,6 @@ const setcardsOnTable = (room, data) =>{
 }
 
 const prepareRoom = (room) =>{
-    //console.log(room);
-    //console.log(rooms)
-
     let temp = false;
     for(const i in rooms){
         if( rooms[i].name == room ) temp = true;

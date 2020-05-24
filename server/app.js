@@ -51,43 +51,37 @@ io.on('connect', (socket) => {
     });
     
     socket.on('trySet', ({ids, nickName, room}, callback)=>{
-        let good = 0;
-        cardsOnTable(room).forEach(e=>{ if(e.id===ids[0]){good++;return;} });
-        cardsOnTable(room).forEach(e=>{ if(e.id===ids[1]){good++;return;} });
-        cardsOnTable(room).forEach(e=>{ if(e.id===ids[2]){good++;return;} });
-        if(good!=3) {callback(false); return;}
-
+        let cardsMatchingOnTable = 0;
+        cardsOnTable(room).forEach(e=>{ if(e.id===ids[0]){cardsMatchingOnTable++;return;} });
+        cardsOnTable(room).forEach(e=>{ if(e.id===ids[1]){cardsMatchingOnTable++;return;} });
+        cardsOnTable(room).forEach(e=>{ if(e.id===ids[2]){cardsMatchingOnTable++;return;} });
+        if(cardsMatchingOnTable!=3) return callback(false);
         const setToCheck = ids.map((element =>{
             const index = cardsOnTable(room).findIndex(card=>{
                  return element==card.id;
             });
             return cardsOnTable(room)[index];
         }));
-
-        if(isSetCorrect(setToCheck)){
-            addPoint(nickName, room);
-            const scoreboard = getScoreboard(room);
-            let newCards = [];
-
-            if(deck(room).length!=0 && cardsOnTable(room).length<=12){ 
-                for(let i = 0; i < 3; i++) newCards.push( getRandomCardFromDeck(room) );
-                const newCards2 = newCards.map(e=>e);                  
-                setcardsOnTable(room, 
-                    cardsOnTable(room).map(element => {
-                    if(element.id == ids[0] || element.id == ids[1] || element.id == ids[2]) return newCards2.pop();
-                    else return element;
-                })
-                );
-                if(deck(room).length==0) newCards[2].quantity = null;
-            } 
-            else {
-                newCards = null;
-                setcardsOnTable(room) = JSON.parse(JSON.stringify(cardsOnTable(room))).filter(e=> e.id!==ids[0] && e.id!==ids[1] && e.id!==ids[2] );
-            }
-            io.to(room).emit('setFound', {ids, newCards, scoreboard});
-            if(cardsOnTable(room).length===0) io.to(room).emit('gameEnd', scoreboard[0].name) ;
+        if(!isSetCorrect(setToCheck)) return callback(false);
+        addPoint(nickName, room);
+        const scoreboard = getScoreboard(room);
+        let newCards = [];
+        if(deck(room).length!=0 && cardsOnTable(room).length<=12){ 
+            for(let i = 0; i < 3; i++) newCards.push( getRandomCardFromDeck(room) );
+            const newCards2 = newCards.map(e=>e);                  
+            setcardsOnTable(room, 
+                cardsOnTable(room).map(element => {
+                if(element.id == ids[0] || element.id == ids[1] || element.id == ids[2]) return newCards2.pop();
+                else return element;
+            }));
+            if(deck(room).length==0) newCards[2].quantity = null;
+        } 
+        else {
+            newCards = null;
+            setcardsOnTable(room, cardsOnTable(room).filter(e=> e.id!==ids[0] && e.id!==ids[1] && e.id!==ids[2] ));
         }
-        else callback(false);
+        io.to(room).emit('setFound', {ids, newCards, scoreboard});
+        if(cardsOnTable(room).length===0) io.to(room).emit('gameEnd', scoreboard[0].name);
     });
 
     socket.on('noMoreSet', ({name, state, room})=>{
