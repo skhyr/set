@@ -5,7 +5,7 @@ import {ScoreContext} from '../contexts/ScoreContext';
 import {FunctionContext} from '../contexts/FunctionContext';
 
 const Scoreboard = () =>{
-    const [nickName] = useContext(InfoContext); 
+    const {nickName} = useContext(InfoContext); 
     const [score] = useContext(ScoreContext);
     const {need, changeNeed} = useContext(FunctionContext);
 

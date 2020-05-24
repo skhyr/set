@@ -5,7 +5,7 @@ import Scoreboard from './Scoreboard/Scoreboard';
 import './Game.css';
 
 const Game = ({history}) =>{
-    const [nickName] = useContext(InfoContext);
+    const {nickName} = useContext(InfoContext);
 
     if(nickName === null){
         history.push('/');

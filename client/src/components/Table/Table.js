@@ -11,7 +11,7 @@ const Table = ({history}) =>{
     const [deck, setDeck] = useState([]);
     const [selected, setSelected] = useState([]);
     const [winnerName, setWinnnerName] = useState('twoj stary');
-    const [nickName] = useContext(InfoContext); 
+    const {nickName, roomName} = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
     const {need, changeNeedFalse, changeNeed} = useContext(FunctionContext);
     const ENDPOINT = 'localhost:4000';
@@ -39,7 +39,7 @@ const Table = ({history}) =>{
 
     useEffect(()=>{
         socket = io(ENDPOINT);
-        socket.emit('init', nickName, (data) =>{
+        socket.emit('init', {nickName, roomName}, (data) =>{
            if(data === 'error'){
                 alert('user with this name already exists!!');
                 history.push('/');
@@ -101,7 +101,7 @@ const Table = ({history}) =>{
     
     useEffect(()=>{
         if(selected.length === 3){ 
-            socket.emit('trySet', {ids:selected, nickName}, (answer)=>{
+            socket.emit('trySet', {ids:selected, nickName, room: roomName}, (answer)=>{
                 answer ? 
                 alert('good')
                 : alert('bad');
@@ -115,7 +115,7 @@ const Table = ({history}) =>{
     
 
     useEffect(()=>{
-        socket.emit('noMoreSet', {state: need, name: nickName});
+        socket.emit('noMoreSet', {state: need, name: nickName, room: roomName});
     }, [need]);
 
     let prefix = [];

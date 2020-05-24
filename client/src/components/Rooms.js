@@ -3,10 +3,13 @@ import {InfoContext} from './contexts/InfoContext';
 import './Rooms.css';
 
 const Rooms = ({history}) =>{
-    const [nickName, setNickName] = useContext(InfoContext);
+    const {nickName, setNickName, roomName, setRoomName} = useContext(InfoContext);
     
-    const inputUpdate = e => {
+    const input1Update = e => {
         setNickName(e.target.value);
+    }
+    const input2Update = e => {
+        setRoomName(e.target.value);
     }
 
     const buttonClick = (e) =>{
@@ -20,9 +23,9 @@ const Rooms = ({history}) =>{
         <form className='formBox'>
             <h1>Join the game</h1>  
 
-                <input placeholder='nickname' type="text" id='loginy' onChange={inputUpdate} autoComplete='off' />
+                <input placeholder='nickname' type="text" id='loginy' onChange={input1Update} autoComplete='off' />
             
-                <input  placeholder='room' type="text" />
+                <input  placeholder='room' type="text" id='pokoje' onChange={input2Update} autoComplete='off' />
 
                 <button className='goButton' onClick={buttonClick}>Play</button>
            
