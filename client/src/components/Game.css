@@ -5,6 +5,7 @@
     height: 100vh;
     padding: 0px;
     background-color: rgb(114, 90, 128);
+    font-family: 'Fira Code', sans-serif;
 }
 
 *::selection{

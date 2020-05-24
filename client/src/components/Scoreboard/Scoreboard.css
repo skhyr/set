@@ -48,6 +48,7 @@
     border-radius: .2rem;
     outline: none;
     color: rgb(214, 202, 183);
+    font-family: 'Fira Code', sans-serif;
 }
 
 .Scoreboard .unclicked{
@@ -62,18 +63,19 @@
     .Scoreboard{
         width: 100vw;
         position: relative;
+        padding-top: 1em;
     }
     .Scoreboard button{
         display: block;
         position:  absolute;
         width: 4em;
         font-size: .7em;
-        top: 0em;
+        top: 1.5em;
         bottom: initial;
         right: .2em;
         left: initial;
         transform: initial;
-        height: calc(16vh - .4em);
+        height: calc(16vh - 2em);
         margin-top: .2em;
         margin-bottom: .2em;
     }
@@ -84,11 +86,14 @@
         margin-top: 0.1em;
         margin-bottom: 0.1em;
         padding-left: 0.3em;
-        font-size: 1.2em;
+        font-size: .8em;
     }
     .playersList{
         font-size: .7em;
         width: 65%;
+    }
+    .playersList > *{
+        height: 1.2em !important;
     }
 }
 

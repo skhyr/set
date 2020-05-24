@@ -134,14 +134,14 @@ const Table = ({history}) =>{
 
     return(
         <div className='Table'>
-        <div className="cooldown"><div className="proc" /></div>
             {prefix}
             {deck.map(
                 (card, i)=>
-                        <Card key={i} card={card} click={()=>selectCard(card.id)} /> 
-            )}
+                <Card key={i} card={card} click={()=>selectCard(card.id)} /> 
+                )}
             {sufix}
         <div  className='winner'> <div className='center'>  <div className='winnerSubtext'>the winner is:</div>{winnerName}</div>  </div>
+                <div className="cooldown"><div className="proc" /></div>
         </div>
     );
 };
