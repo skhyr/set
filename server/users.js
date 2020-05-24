@@ -114,6 +114,7 @@ const goOnline = (user, room) =>{
 }
 
 const getScoreboard = (room) =>{
+    if(!room) return [];
     const scoreboard = rooms[room].users.map(e=>{
         return {
             name: e.name,
@@ -137,7 +138,7 @@ const addPoint = (name, room) =>{
 
 const userQuit = socketId =>{
     let data;
-    rooms.forEach(room=>{
+    for(const room in rooms){
         rooms[room].users.forEach(e=>{
             if(e.socketId == socketId){
                 e.online = false;
@@ -145,7 +146,7 @@ const userQuit = socketId =>{
                 return e.name;
             }
         });
-    });
+    }
     return data;
 }
 
