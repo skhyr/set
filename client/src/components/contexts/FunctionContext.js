@@ -5,6 +5,7 @@ export const FunctionContext = createContext();
 export const FunctionProvider = props => {
     
     const [need, setNeed] = useState(false);
+    const [socket, setSocket] = useState();
     
     const changeNeed = () => {
         setNeed(!need);
@@ -19,7 +20,7 @@ export const FunctionProvider = props => {
     }
 
     return(
-        <FunctionContext.Provider value={ {need, changeNeed, changeNeedFalse} } >
+        <FunctionContext.Provider value={ {need, changeNeed, changeNeedFalse, socket, setSocket} } >
             {props.children}
         </FunctionContext.Provider>
     );

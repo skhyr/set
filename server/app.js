@@ -34,6 +34,11 @@ const isSetCorrect = (setToChek) =>{
 }
 
 io.on('connect', (socket) => {
+    
+    socket.on('message', ({nickName, message, room})=>{
+        io.to(room).emit('newMessage', {nickName, message});
+        console.log(message);
+    });
 
     socket.on('init', ({nickName, roomName}, callback)=>{
         socket.join(roomName);

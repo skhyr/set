@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
+.Chat{
+    width: 100%;
+    height: 8em;
+    font-family: 'Roboto', sans-serif;
+    padding-top: .2em;
+    background-color: azure;
+
+}
+.Chat .messagesScreen{
+    width: 100%;
+    height: 85%;
+    color: black;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-size: .7em;
+} 
+.Chat .messagesScreen > div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.Chat .message.nth{
+    border-top-left-radius: 2px;
+}
+.Chat .message.me.nth{
+    border-top-left-radius: 7px;
+}
+.Chat .message.first{
+    margin-top:1em;
+}
+.Chat .message{
+    position: relative;
+    display: inline-block;
+    max-width: 90%;
+    margin-left: .5em;
+    padding-right: .6em;
+    padding-left: .6em;
+    border-radius: 7px;
+    border-bottom-left-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.253);
+    background-color: rgb(217, 240, 243);
+}
+.Chat .message.me{
+    background-color: burlywood;
+    align-self: flex-end;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 2px;
+}
+.Chat .text{
+    width: auto;
+    display: inline-block;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: .9em;
+
+}
+.Chat .author{
+    position: absolute;
+    font-size: .6em;
+    top: -1.2em;
+    left: .5em;
+    color: rgba(0, 0, 0, 0.712);
+}
+
+.Chat .options{
+    display: flex;
+    flex-direction: row;
+    height: 15%;
+}
+.Chat button{
+    height: 100%;
+    display: block;
+    font-family: 'Roboto', sans-serif;
+}
+.Chat input{
+    height: 100%;
+    flex: 1;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+}

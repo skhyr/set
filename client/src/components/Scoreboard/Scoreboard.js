@@ -3,6 +3,7 @@ import './Scoreboard.css';
 import {InfoContext} from '../contexts/InfoContext';
 import {ScoreContext} from '../contexts/ScoreContext';
 import {FunctionContext} from '../contexts/FunctionContext';
+import Chat from '../Chat/Chat';
 
 const Scoreboard = () =>{
     const {nickName} = useContext(InfoContext); 
@@ -26,6 +27,8 @@ const Scoreboard = () =>{
                         return <div key={id}> {(id+1) + '. ' + e.name + ' ' + e.score} </div>
                     })}
                 </div>
+                
+                <Chat />
             
          </div>
     )

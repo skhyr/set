@@ -22,7 +22,7 @@
 }
 
 .playersList{
-    height: 60%;
+    height: 50%;
     overflow-y: hidden;
     overflow-x: hidden;
     padding-left: .3em;
@@ -34,7 +34,7 @@
     width: 100em;
 }
 
-.Scoreboard button{
+.Scoreboard > button{
     display: block;
     font-size: 1em;
     position: absolute;

@@ -11,10 +11,10 @@ const Table = ({history}) =>{
     const [deck, setDeck] = useState([]);
     const [selected, setSelected] = useState([]);
     const [winnerName, setWinnnerName] = useState('twoj stary');
-    const {nickName, roomName} = useContext(InfoContext); 
+    const {nickName, roomName, messages, setMessages} = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
-    const {need, changeNeedFalse, changeNeed} = useContext(FunctionContext);
-    const ENDPOINT = 'https://stormy-stream-31416.herokuapp.com';
+    const {need, changeNeedFalse, changeNeed, setSocket} = useContext(FunctionContext);
+    const ENDPOINT = 'localhost:4000';
     
     const animate = (e) =>{
         e.classList.remove("movements");
@@ -39,6 +39,7 @@ const Table = ({history}) =>{
 
     useEffect(()=>{
         socket = io(ENDPOINT);
+        setSocket(socket);
         socket.emit('init', {nickName, roomName}, (data) =>{
            if(data === 'error'){
                 alert('user with this name already exists!!');
@@ -91,6 +92,10 @@ const Table = ({history}) =>{
 
         socket.on('updatePlayersList', (data)=>{
             setScore(data);
+        });
+
+        socket.on('newMessage', ({message, nickName})=>{
+            setMessages(oldArray => [...oldArray, {author: nickName, message}]);
         });
         
         return () => {
