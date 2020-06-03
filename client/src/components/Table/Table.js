@@ -10,7 +10,7 @@ let socket;
 const Table = ({history}) =>{
     const [deck, setDeck] = useState([]);
     const [selected, setSelected] = useState([]);
-    const [winnerName, setWinnnerName] = useState('twoj stary');
+    const [winnerName, setWinnnerName] = useState('loading...');
     const {nickName, roomName, messages, setMessages} = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
     const {need, changeNeedFalse, changeNeed, setSocket} = useContext(FunctionContext);
@@ -37,7 +37,7 @@ const Table = ({history}) =>{
         }
     };
 
-    useEffect(()=>{
+    useEffect(()=>{         
         socket = io(ENDPOINT);
         setSocket(socket);
         socket.emit('init', {nickName, roomName}, (data) =>{
@@ -46,8 +46,9 @@ const Table = ({history}) =>{
                 history.push('/');
             }
             else setDeck(data);
-
-        });
+            document.querySelector(".winner").style.display = "none";
+            document.querySelector(".winnerSubtext").style.display = "block";
+        });      
     },[ENDPOINT]);
 
 

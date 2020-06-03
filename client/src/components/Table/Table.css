@@ -24,7 +24,6 @@
     background-color: rgba(0, 0, 0, 0.925);
     font-size: 5rem;
     text-align: center;
-    display: none;
     color: rgb(255, 255, 255);
 }
 
@@ -42,6 +41,7 @@
     color: rgb(114, 114, 114);
     margin-bottom: 0vh;
     font-size: 0.3em;
+    display: none;
 }
 
 .Table button{
