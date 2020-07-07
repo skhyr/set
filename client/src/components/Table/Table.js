@@ -14,7 +14,7 @@ const Table = ({history}) =>{
     const {nickName, roomName, messages, setMessages} = useContext(InfoContext); 
     const [score, setScore] = useContext(ScoreContext);
     const {need, changeNeedFalse, changeNeed, setSocket} = useContext(FunctionContext);
-    const ENDPOINT = 'https://stormy-stream-31416.herokuapp.com/';
+    const ENDPOINT = 'https://set-server0.herokuapp.com/';
     
     const animate = (e) =>{
         e.classList.remove("movements");
